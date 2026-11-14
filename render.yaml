@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: silpa-cloud-operations
+    runtime: docker
+    plan: starter
+    region: singapore
+    autoDeployTrigger: off
+    healthCheckPath: /healthz
+    disk:
+      name: silpa-operational-state
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: AUTO_REPLIES
+        value: "false"
+      - key: WHATSAPP_GROUP
+        value: 120363406445696303@g.us
+      - key: WHATSAPP_GROUP_NAME
+        value: Silpa Production
+      - key: WORKSPACE_URL
+        value: https://silpa-production-workspace.lushowlet21.chatgpt.site
