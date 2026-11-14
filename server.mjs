@@ -36,5 +36,5 @@ const server=http.createServer(async(req,res)=>{
  if(url.pathname==='/api/send'&&req.method==='POST'){if(typeof body.id!=='string'||!/^manual-[a-zA-Z0-9-]{8,100}$/.test(body.id)||typeof body.message!=='string'||!body.message.trim()||body.message.length>4000){json({error:'Provide a unique manual- identifier and a message of 1–4000 characters'},400);return}const added=enqueue(body.id,body.message);json({queued:!!added,id:body.id,status:db.prepare('SELECT status FROM deliveries WHERE id=?').get(body.id)?.status});return}
  json({error:'Not found'},404)
 });
-server.listen(port,'0.0.0.0',()=>{console.log('Silpa cloud operations listening; control panel authentication required');connect();setInterval(deliver,2000);setInterval(syncWorkspace,30000)});
+server.listen(port,'0.0.0.0',()=>{console.log('Silpa cloud operations listening; control panel authentication required');if(env.NODE_ENV!=='test')connect();setInterval(deliver,2000);setInterval(syncWorkspace,30000)});
 process.on('SIGTERM',()=>{socket?.end(undefined);server.close(()=>{db.close();process.exit(0)})});
