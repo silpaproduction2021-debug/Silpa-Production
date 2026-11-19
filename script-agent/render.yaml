@@ -1,0 +1,32 @@
+services:
+  - type: worker
+    name: document-script-agent
+    runtime: node
+    rootDir: script-agent
+    branch: docs-agent
+    region: singapore
+    plan: 0.5c-512mb
+    numInstances: 1
+    buildCommand: npm test
+    startCommand: npm start
+    autoDeployTrigger: 'off'
+    maxShutdownDelaySeconds: 180
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.1
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: GOOGLE_DOCUMENT_ID
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        sync: false
+      - key: POLL_SECONDS
+        value: '30'
+      - key: QUIET_SECONDS
+        value: '90'
+      - key: MAX_REVIEWS_PER_HOUR
+        value: '6'
+      - key: MIN_REVIEW_INTERVAL_SECONDS
+        value: '180'
